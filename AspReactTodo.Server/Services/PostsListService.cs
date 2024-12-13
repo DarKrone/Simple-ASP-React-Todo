@@ -5,10 +5,10 @@ using System.Reflection;
 
 namespace AspReactTodo.Server.Services
 {
-    public class PostsService : IPostsService
+    public class PostsListService : IPostsService
     {
         private MyDataContext _dataContext;
-        public PostsService(MyDataContext dataContext)
+        public PostsListService(MyDataContext dataContext)
         {
             _dataContext = dataContext;
         }
