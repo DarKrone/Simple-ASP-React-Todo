@@ -1,6 +1,7 @@
 ﻿using AspReactTodo.Server.Data;
 using AspReactTodo.Server.Interfaces;
 using AspReactTodo.Server.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspReactTodo.Server.Services
 {
@@ -13,39 +14,34 @@ namespace AspReactTodo.Server.Services
             this.context = context;
         }
 
-        public PostModel Create(PostModel model)
+        public async Task<PostModel> CreateAsync(PostModel model)
         {
-            context.Add(model);
-            context.SaveChanges();
+            await context.AddAsync(model);
+            await context.SaveChangesAsync();
             return model;
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            PostModel model = context.Posts.Find(id)!;
-            context.Remove(model);
-            context.SaveChanges();
+            await context.Posts.Where(p => p.Id == id).ExecuteDeleteAsync();
         }
 
-        public PostModel Get(int id)
+        public async Task<PostModel> GetAsync(int id)
         {
-            PostModel model = context.Posts.FirstOrDefault(x => x.Id == id)!;
+            PostModel? model = await context.Posts.FirstOrDefaultAsync(x => x.Id == id);
+            return model!;
+        }
+
+        public async Task<List<PostModel>> GetAsync()
+        {
+            return await context.Posts.ToListAsync();
+        }
+
+        public async Task<PostModel> UpdateAsync(PostModel model)
+        {
+            context.Posts.Update(model);
+            await context.SaveChangesAsync();
             return model;
-        }
-
-        public List<PostModel> Get()
-        {
-            return context.Posts.ToList();
-        }
-
-        public PostModel Update(PostModel model)
-        {
-            PostModel newModel = context.Posts.FirstOrDefault(x => x.Id == model.Id)!;
-            newModel.Title = model.Title;
-            newModel.Description = model.Description;
-            context.Posts.Update(newModel);
-            context.SaveChanges();
-            return newModel;
         }
     }
 }

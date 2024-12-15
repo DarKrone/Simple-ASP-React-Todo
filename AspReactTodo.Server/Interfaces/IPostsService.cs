@@ -4,10 +4,10 @@ namespace AspReactTodo.Server.Interfaces
 {
     public interface IPostsService
     {
-        PostModel Create(PostModel model);
-        PostModel Update(PostModel model);
-        PostModel Get(int id);
-        List<PostModel> Get();
-        void Delete(int id);
+        Task<PostModel> CreateAsync(PostModel model);
+        Task<PostModel> UpdateAsync(PostModel model);
+        Task<PostModel> GetAsync(int id);
+        Task<List<PostModel>> GetAsync();
+        Task DeleteAsync(int id);
     }
 }

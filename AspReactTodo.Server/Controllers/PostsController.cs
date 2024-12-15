@@ -16,33 +16,37 @@ namespace AspReactTodo.Server.Controllers
         }
 
         [HttpPost]
-        public PostModel Create(PostModel model)
+        public async Task<PostModel> CreateAsync(PostModel model)
         {
-            return _postsService.Create(model);
+            PostModel newModel = await _postsService.CreateAsync(model);
+            return newModel;
         }
 
         [HttpPatch]
-        public PostModel Update(PostModel model)
+        public async Task<PostModel> UpdateAsync(PostModel model)
         {
-            return _postsService.Update(model);
+            PostModel newModel = await _postsService.UpdateAsync(model);
+            return newModel;
         }
 
         [HttpGet("{id}")]
-        public PostModel Get(int id)
+        public async Task<PostModel> GetAsync(int id)
         {
-            return _postsService.Get(id);
+            PostModel model = await _postsService.GetAsync(id);
+            return model;
         }
 
         [HttpGet]
-        public IEnumerable<PostModel> GetAll()
+        public async Task<IEnumerable<PostModel>> GetAllAsync()
         {
-            return _postsService.Get();
+            List<PostModel> models = await _postsService.GetAsync();
+            return models;
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> DeleteAsync(int id)
         {
-            _postsService.Delete(id);
+            await _postsService.DeleteAsync(id);
             return Ok();
         }
     }

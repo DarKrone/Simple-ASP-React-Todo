@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace AspReactTodo.Server.Services
 {
-    public class PostsListService : IPostsService
+    public class PostsListService //: IPostsService
     {
         private MyDataContext _dataContext;
         public PostsListService(MyDataContext dataContext)
