@@ -47,6 +47,22 @@ export default defineConfig({
             '^/api': {
                 target,
                 secure: false
+            },
+            '/pingauth': {
+                target,
+                secure: false
+            },
+            '/register': {
+                target,
+                secure: false
+            },
+            '/login': {
+                target,
+                secure: false
+            },
+            '/logout': {
+                target,
+                secure: false
             }
         },
         port: 5173,

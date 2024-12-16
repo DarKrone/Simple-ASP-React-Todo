@@ -1,7 +1,10 @@
 using AspReactTodo.Server.Data;
 using AspReactTodo.Server.Interfaces;
+using AspReactTodo.Server.Models;
 using AspReactTodo.Server.Services;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,24 +17,39 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
-string connectingString = builder.Configuration.GetConnectionString("DefaultConnection")!;
+string postsConnectionString = builder.Configuration.GetConnectionString("PostsConnection")!;
 builder.Services.AddDbContext<PostsDbContext>(options =>
 {
-    options.UseSqlite(connectingString);
+    options.UseSqlite(postsConnectionString);
+});
+
+string UsersConnectionString = builder.Configuration.GetConnectionString("UsersConnection")!;
+builder.Services.AddDbContext<ApplicationUsersDbContext>(options =>
+{
+    options.UseSqlite(UsersConnectionString);
 });
 
 
+builder.Services.AddAuthorization();
+builder.Services.AddIdentityApiEndpoints<ApplicationUser>().AddEntityFrameworkStores<ApplicationUsersDbContext>();
+
 var app = builder.Build();
 
-//app.Use(async (context, next) =>
-//{
-//    Console.WriteLine($"[{context.Request.Method} {context.Request.Path} {DateTime.UtcNow}] Started.");
-//    await next();
-//    Console.WriteLine($"[{context.Request.Method} {context.Request.Path} {DateTime.UtcNow}] Finished.");
-//});
-
+app.MapIdentityApi<ApplicationUser>();
 app.UseDefaultFiles();
 app.UseStaticFiles();
+
+app.MapPost("/logout", async (SignInManager<ApplicationUser> signInManager) =>
+{
+    await signInManager.SignOutAsync();
+    return Results.Ok();
+}).RequireAuthorization();
+
+app.MapGet("/pingauth", (ClaimsPrincipal user) =>
+{
+    var email = user.FindFirstValue(ClaimTypes.Email);
+    return Results.Json(new { Email = email });
+}).RequireAuthorization();
 
 //Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

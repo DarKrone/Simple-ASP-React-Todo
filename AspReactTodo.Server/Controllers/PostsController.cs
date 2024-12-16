@@ -1,11 +1,13 @@
 ﻿using AspReactTodo.Server.Interfaces;
 using AspReactTodo.Server.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AspReactTodo.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PostsController : ControllerBase
     {
         private IPostsService _postsService;
