@@ -1,5 +1,6 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Form, Button } from 'react-bootstrap'
 
 function Register() {
 	const [email, setEmail] = useState("");
@@ -60,52 +61,26 @@ function Register() {
 	}
 
 	return (
-		<div className="containerbox">
-			<h3>Register</h3>
-
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor="email">Email:</label>
-				</div><div>
-					<input
-						type="email"
-						id="email"
-						name="email"
-						value={email}
-						onChange={handleChange}
-					/>
-				</div>
-				<div>
-					<label htmlFor="password">Password:</label></div><div>
-					<input
-						type="password"
-						id="password"
-						name="password"
-						value={password}
-						onChange={handleChange}
-					/>
-				</div>
-				<div>
-					<label htmlFor="confirmPassword">Confirm Password:</label></div><div>
-					<input
-						type="password"
-						id="confirmPassword"
-						name="confirmPassword"
-						value={confirmPassword}
-						onChange={handleChange}
-					/>
-				</div>
-				<div>
-					<button type="submit">Register</button>
-
-				</div>
-				<div>
-					<button onClick={handleLoginClick}>Go to Login</button>
-				</div>
-			</form>
-
-			{error && <p className="error">{error}</p>}
-		</div>
+		<>
+			<div className="containerbox">
+				<h4>Registration</h4>
+				<Form>
+					<Form.Label>Email</Form.Label>
+					<Form.Control type="email" id="email" name="email" value={email} onChange={handleChange} placeholder="Enter email"></Form.Control>
+					<Form.Label style={{ margin: "10px 0px" }}>Password</Form.Label>
+					<Form.Control type="password" id="password" name="password" value={password} onChange={handleChange} placeholder="Password"></Form.Control>
+					<Form.Label style={{ margin: "10px 0px" }}>Confirm Password</Form.Label>
+					<Form.Control type="password" id="confirmPassword" name="confirmPassword" value={confirmPassword} onChange={handleChange} placeholder="Confirm password"></Form.Control>
+					<div>
+						<Button type="submit" onClick={handleSubmit} style={{ margin: "10px 0px" }}>Register</Button>
+					</div>
+					<div>
+						<Button onClick={handleLoginClick} variant="secondary" style={{ margin: "10px 0px" }}>Go to Login</Button>
+					</div>
+					{error && <p className="error">{error}</p>}
+				</Form>
+			</div>
+		</>
 	);
 }
 

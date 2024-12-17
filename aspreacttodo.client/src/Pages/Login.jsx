@@ -1,10 +1,11 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
+import { Form, Button} from 'react-bootstrap'
 
 function Login() {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const [rememberme, setRememberme] = useState("");
+	const [rememberme, setRememberme] = useState(false);
 	const [error, setError] = useState("");
 
 	const navigate = useNavigate();
@@ -13,7 +14,7 @@ function Login() {
 		const { name, value } = e.target
 		if (name === "email") setEmail(value);
         if (name === "password") setPassword(value);
-        if (name === "rememberme") setRememberme(value);
+        if (name === "rememberme") setRememberme(e.target.checked);
 	}
 
 	const handleRegisterClick = () => {
@@ -62,50 +63,25 @@ function Login() {
     };
 
     return (
-        <div className="containerbox">
-            <h3>Login</h3>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label className="forminput" htmlFor="email">Email:</label>
-                </div>
-                <div>
-                    <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        value={email}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <label htmlFor="password">Password:</label>
-                </div>
-                <div>
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        value={password}
-                        onChange={handleChange}
-                    />
-                </div>
-                <div>
-                    <input
-                        type="checkbox"
-                        id="rememberme"
-                        name="rememberme"
-                        checked={rememberme}
-                        onChange={handleChange} /><span>Remember Me</span>
-                </div>
-                <div>
-                    <button type="submit">Login</button>
-                </div>
-                <div>
-                    <button onClick={handleRegisterClick}>Register</button>
-                </div>
-            </form>
-            {error && <p className="error">{error}</p>}
-        </div>
+        <>
+            <div className="containerbox">
+                <h4>Log in</h4>
+                <Form>
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control type="email" id="email" name="email" value={email} onChange={handleChange} placeholder="Enter email"></Form.Control>
+                    <Form.Label style={{ margin: "10px 0px" }}>Password</Form.Label>
+                    <Form.Control type="password" id="password" name="password" value={password} onChange={handleChange} placeholder="Password"></Form.Control>
+                    <Form.Check inline type="checkbox" label="Remember me" onChange={handleChange} id="rememberme" name="rememberme" style={{ margin: "5px 0px" }}></Form.Check>
+                    <div>
+                        <Button type="submit" onClick={handleSubmit} style={{ margin: "10px 0px" }}>Log In</Button>
+                    </div>
+                    <div>
+                        <Button onClick={handleRegisterClick} variant="secondary" style={{ margin: "10px 0px" }}>Register</Button>
+                    </div>
+                    {error && <p className="error">{error}</p>}
+                </Form>
+            </div>
+        </>
     );
 }
 
